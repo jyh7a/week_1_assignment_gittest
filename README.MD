@@ -979,3 +979,77 @@ app.listen(process.env.PORT, () => {
 ```
 API 테스트 도구를 통해서 user 생성 및 user get 테스트
 ```
+
+```
+week_1_assignment_gittest
+├─ .git
+│  ├─ HEAD
+│  ├─ branches
+│  ├─ config
+│  ├─ description
+│  ├─ hooks
+│  │  ├─ applypatch-msg.sample
+│  │  ├─ commit-msg.sample
+│  │  ├─ fsmonitor-watchman.sample
+│  │  ├─ post-update.sample
+│  │  ├─ pre-applypatch.sample
+│  │  ├─ pre-commit.sample
+│  │  ├─ pre-merge-commit.sample
+│  │  ├─ pre-push.sample
+│  │  ├─ pre-rebase.sample
+│  │  ├─ pre-receive.sample
+│  │  ├─ prepare-commit-msg.sample
+│  │  ├─ push-to-checkout.sample
+│  │  └─ update.sample
+│  ├─ index
+│  ├─ info
+│  │  └─ exclude
+│  ├─ logs
+│  │  ├─ HEAD
+│  │  └─ refs
+│  │     ├─ heads
+│  │     │  └─ main
+│  │     └─ remotes
+│  │        └─ origin
+│  │           └─ HEAD
+│  ├─ objects
+│  │  ├─ info
+│  │  └─ pack
+│  │     ├─ pack-3602898b0a16a616ea4aa574731e20e813d1ccec.idx
+│  │     └─ pack-3602898b0a16a616ea4aa574731e20e813d1ccec.pack
+│  ├─ packed-refs
+│  └─ refs
+│     ├─ heads
+│     │  └─ main
+│     ├─ remotes
+│     │  └─ origin
+│     │     └─ HEAD
+│     └─ tags
+├─ .gitignore
+├─ README.MD
+├─ app.js
+├─ config
+│  └─ config.js
+├─ controllers
+│  ├─ post.controller.js
+│  └─ user.controller.js
+├─ migrations
+│  ├─ 20221230073833-create-user.js
+│  ├─ 20221230074202-create-post.js
+│  ├─ 20221230074203-create-comment.js
+│  ├─ 20221230074204-create-like.js
+│  └─ 20221230074551-alter-reference-post.js.js
+├─ models
+│  ├─ comment.js
+│  ├─ index.js
+│  ├─ like.js
+│  ├─ post.js
+│  └─ user.js
+├─ package-lock.json
+├─ package.json
+├─ routes
+│  ├─ post.routes.js
+│  └─ user.routes.js
+└─ test.sql
+
+```
