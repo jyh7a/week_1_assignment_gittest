@@ -865,7 +865,7 @@ const createUser = async (req, res) => {
       res.status(201).send({ userId });
     } catch (error) {
       console.log(error);
-      res.status(500).send({ errorMessage: error.original.sqlMessage });
+      res.status(500).send({ errorMessage: error.original?.sqlMessage });
     }
   } catch (error) {
     console.error(error);
@@ -979,3 +979,10 @@ app.listen(process.env.PORT, () => {
 ```
 API 테스트 도구를 통해서 user 생성 및 user get 테스트
 ```
+
+<br>
+
+# Reference
+- sequelize
+  - https://kyounghwan01.github.io/blog/etc/sequelize/sequelize-join/#inner-outer-join%E1%84%8B%E1%85%B5%E1%84%85%E1%85%A1%E1%86%AB
+  - https://inpa.tistory.com/entry/ORM-%F0%9F%93%9A-sequelize-left-join-%ED%95%98%EB%8A%94%EB%B2%95

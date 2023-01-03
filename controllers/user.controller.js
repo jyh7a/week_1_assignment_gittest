@@ -1,29 +1,68 @@
-const { sequelize, User, Post, Comment, Like } = require("../models");
+const { Op } = require("sequelize");
+const jwt = require("jsonwebtoken");
+
+const { sequelize, User } = require("../models");
+
+require("dotenv").config();
+
+const login = async (req, res) => {
+  try {
+    const { nickname, password } = req.body;
+    const user = await User.findOne({
+      where: {
+        [Op.and]: [{ nickname }, { password }],
+      },
+    });
+
+    // NOTE: 인증 메세지는 자세히 설명하지 않는것을 원칙으로 한다: https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html#authentication-responses
+    if (!user || password !== user.password) {
+      return res.status(400).send({
+        errorMessage: "이메일 또는 패스워드가 틀렸습니다.",
+      });
+    }
+
+    res.cookie(
+      "jwt",
+      { token: jwt.sign({ id: user.id }, process.env.JWT_SECRET_KEY) },
+      { maxAge: 1000 * 60 * 10 }
+    );
+
+    res.send({
+      token: jwt.sign({ id: user.id }, process.env.JWT_SECRET_KEY),
+    });
+  } catch (error) {
+    console.log(error);
+    if (error.original?.sqlMessage) {
+      return res.status(500).send({ errorMessage: error.original?.sqlMessage });
+    }
+    res.status(500).send({ errorMessage: error.message });
+  }
+};
 
 const getUsers = async (req, res) => {
   try {
     // const users = await User.findAll({
-      // 아래 중첩되지 않은 left join 과 중첩된 left join을 실행시켜 값을 비교해보세요!
-      // post, comment, like 에 더미데이터 넣으시고 테스트 해야합니다. 
-      // dbeaver 이용해서 더미데이터 만들때 날짜를 입력 안 해서 오류 날수 있으니 날짜는 
-      // 0000-00-00 00:00:00 왼쪽과 같이 넣으셔도 됩니다.
+    // 아래 중첩되지 않은 left join 과 중첩된 left join을 실행시켜 값을 비교해보세요!
+    // post, comment, like 에 더미데이터 넣으시고 테스트 해야합니다.
+    // dbeaver 이용해서 더미데이터 만들때 날짜를 입력 안 해서 오류 날수 있으니 날짜는
+    // 0000-00-00 00:00:00 왼쪽과 같이 넣으셔도 됩니다.
 
-      // 중첩되지 않은 left join
-      // include: [Post, Comment, Like],
-      // required: false,
+    // 중첩되지 않은 left join
+    // include: [Post, Comment, Like],
+    // required: false,
 
-      // 중첩된 left join
-      // include: [
-      //   {
-      //     model: Post,
-      //     required: false,
-      //   }, // left join 하기위해선 false 주어야함
-      //   {
-      //     model: Post,
-      //     include: Like,
-      //     required: false,
-      //   },
-      // ],
+    // 중첩된 left join
+    // include: [
+    //   {
+    //     model: Post,
+    //     required: false,
+    //   }, // left join 하기위해선 false 주어야함
+    //   {
+    //     model: Post,
+    //     include: Like,
+    //     required: false,
+    //   },
+    // ],
     // });
     // console.log({ users });
 
@@ -33,7 +72,10 @@ const getUsers = async (req, res) => {
 
     res.send({ users });
   } catch (error) {
-    console.error(error);
+    console.log(error);
+    if (error.original?.sqlMessage) {
+      return res.status(500).send({ errorMessage: error.original?.sqlMessage });
+    }
     res.status(500).send({ errorMessage: error.message });
   }
 };
@@ -77,24 +119,33 @@ const createUser = async (req, res) => {
         .send({ message: "password, confirm_password 불일치" });
     }
 
-    // const user = await User.create({ nickname, password });
-    // console.log({ user });
-
     try {
-      const [userId, metadata] = await sequelize.query(`
-        INSERT INTO Users
-        (nickname, password)
-        values("${nickname}", "${password}")
-      `);
-      console.log({ userId });
-      console.log({ metadata });
-      res.status(201).send({ userId });
+      const user = await User.create({ nickname, password });
+      console.log({ user });
+      res.status(201).send({ user });
+
+      // const [userId, metadata] = await sequelize.query(`
+      //   INSERT INTO Users
+      //   (nickname, password)
+      //   values("${nickname}", "${password}")
+      // `);
+      // console.log({ userId });
+      // console.log({ metadata });
+      // res.status(201).send({ userId });
     } catch (error) {
       console.log(error);
-      res.status(500).send({ errorMessage: error.original.sqlMessage });
+      if (error.original?.sqlMessage) {
+        return res
+          .status(500)
+          .send({ errorMessage: error.original?.sqlMessage });
+      }
+      res.status(500).send({ errorMessage: error.message });
     }
   } catch (error) {
-    console.error(error);
+    console.log(error);
+    if (error.original?.sqlMessage) {
+      return res.status(500).send({ errorMessage: error.original?.sqlMessage });
+    }
     res.status(500).send({ errorMessage: error.message });
   }
 };
@@ -117,7 +168,10 @@ const updateUser = async (req, res) => {
 
     res.send({ result });
   } catch (error) {
-    console.error(error);
+    console.log(error);
+    if (error.original?.sqlMessage) {
+      return res.status(500).send({ errorMessage: error.original?.sqlMessage });
+    }
     res.status(500).send({ errorMessage: error.message });
   }
 };
@@ -139,7 +193,10 @@ const deleteUser = async (req, res) => {
 
     res.send({ result });
   } catch (error) {
-    console.error(error);
+    console.log(error);
+    if (error.original?.sqlMessage) {
+      return res.status(500).send({ errorMessage: error.original?.sqlMessage });
+    }
     res.status(500).send({ errorMessage: error.message });
   }
 };
@@ -147,8 +204,6 @@ const deleteUser = async (req, res) => {
 // 테스트용
 const deleteUsers = async (req, res) => {
   try {
-    const { id } = req.params;
-
     // const result = await User.destroy({
     //   where: {},
     // });
@@ -162,9 +217,19 @@ const deleteUsers = async (req, res) => {
 
     res.send({ result });
   } catch (error) {
-    console.error(error);
+    console.log(error);
+    if (error.original?.sqlMessage) {
+      return res.status(500).send({ errorMessage: error.original?.sqlMessage });
+    }
     res.status(500).send({ errorMessage: error.message });
   }
 };
 
-module.exports = { getUsers, createUser, updateUser, deleteUser, deleteUsers };
+module.exports = {
+  login,
+  getUsers,
+  createUser,
+  updateUser,
+  deleteUser,
+  deleteUsers,
+};

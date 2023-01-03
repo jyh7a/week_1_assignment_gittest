@@ -1,0 +1,25 @@
+{
+  "data": [
+    {
+      "postId": 2,
+      "userId": 1,
+      "nickname": "Developer",
+      "title": "안녕하세요 2번째 게시글 제목입니다.",
+      "createdAt": "2022-07-25T07:45:56.000Z",
+      "updatedAt": "2022-07-25T07:45:56.000Z",
+      "likes": 0
+    },
+    {
+      "postId": 1,
+      "userId": 1,
+      "nickname": "Developer",
+      "title": "안녕하세요 게시글 제목입니다.",
+      "createdAt": "2022-07-25T07:45:15.000Z",
+      "updatedAt": "2022-07-25T07:45:15.000Z",
+      "likes": 1
+    }
+  ]
+}
+
+
+

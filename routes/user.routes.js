@@ -13,8 +13,8 @@ const router = express.Router();
 router.get("/users", getUsers);
 router.post("/users", createUser);
 router.put("/users/:id", updateUser);
+router.delete("/users/:id", deleteUser);
 // 테스트용
 router.delete("/users", deleteUsers);
-router.delete("/users/:id", deleteUser);
 
 module.exports = router;
