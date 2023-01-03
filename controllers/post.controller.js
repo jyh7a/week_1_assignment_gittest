@@ -1,4 +1,6 @@
 const { sequelize, User, Post, Comment, Like } = require("../models");
+const user = require("../models/user");
+const { post } = require("../routes/post.routes");
 
 const createPosts = async (req, res) => {
   try {
@@ -35,13 +37,32 @@ const createPosts = async (req, res) => {
 
 const getPosts = async (req, res) => {
   try {
-    const posts = await Post.findAll({});
+    // const posts = await Post.findAll({
+    //   include: [Like],
+    //   required: false,
+    // });  
 
-    res.status(200).json({ posts });
+    const [result, metadata] = await sequelize.query(`
+      SELECT p.*, u.nickname, COALESCE(lc.cnt, lc.cnt, 0) AS 'likes'
+      FROM Posts p
+      LEFT JOIN (
+              SELECT p.id, COUNT(p.id) as cnt
+              FROM Posts p 
+              INNER JOIN Likes l ON p.id = l.postId 
+              GROUP BY p.id
+          ) AS lc 
+          ON p.id = lc.id
+      LEFT JOIN Users u
+      ON p.userId = u.id;
+     `);
+
+    console.log({ result, metadata });
+
+    res.status(200).json({ result });
   } catch (error) {
     console.error(error);
-    res.status(400).send({ "errorMessage": "게시글 조회에 실패하였습니다." });
+    res.status(400).send({ errorMessage: "게시글 조회에 실패하였습니다." });
   }
-}
+};
 
 module.exports = { createPosts, getPosts };
