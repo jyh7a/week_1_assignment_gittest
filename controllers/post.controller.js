@@ -33,13 +33,15 @@ const createPosts = async (req, res) => {
   }
 };
 
-// const getPosts = async (req, res) => {
-//   try {
+const getPosts = async (req, res) => {
+  try {
+    const posts = await Post.findAll({});
 
-//   } catch (error) {
-//     console.error(error)
-//     res.status(500).send({errorMessage:error})
-//   }
-// }
+    res.status(200).json({ posts });
+  } catch (error) {
+    console.error(error);
+    res.status(400).send({ "errorMessage": "게시글 조회에 실패하였습니다." });
+  }
+}
 
-module.exports = { createPosts };
+module.exports = { createPosts, getPosts };
