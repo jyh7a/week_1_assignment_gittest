@@ -1,3 +1,26 @@
+# checklist
+## API
+### 일반
+<input type="checkbox" > 회원가입 - signup   
+<input type="checkbox" > 로그인 - login   
+
+### 게시글
+<input type="checkbox" > 게시글 작성 - posts   
+<input type="checkbox" > 게시글 조회 - posts   
+<input type="checkbox" > 게시글 상세 조회 - posts/:postId <br>
+<input type="checkbox" > 게시글 수정 - posts/:postId <br>
+<input type="checkbox" > 게시글 삭제 - posts/:postId 
+
+### 댓글
+<input type="checkbox" > 댓글 생성 - comments/:postId <br>
+<input type="checkbox" > 댓글 목록 조회 - comments/:postId <br>
+<input type="checkbox" > 댓글 수정 - comments/:postId <br>
+<input type="checkbox" > 댓글 삭제 - comments/:postId <br>
+
+## 좋아요
+<input type="checkbox" > 좋아요 게시글 죄회 - posts/like   
+<input type="checkbox" > 게시글 조회 - posts/:postId/like  
+
 # 이제 이 레포는 제껍니다.
 
 ## Git clone
