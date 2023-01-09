@@ -1,35 +1,36 @@
 const { sequelize, User, Post, Comment, Like } = require("../models");
+const jwt = require('jsonwebtoken');
 
 const getUsers = async (req, res) => {
   try {
     // const users = await User.findAll({
-      // 아래 중첩되지 않은 left join 과 중첩된 left join을 실행시켜 값을 비교해보세요!
-      // post, comment, like 에 더미데이터 넣으시고 테스트 해야합니다. 
-      // dbeaver 이용해서 더미데이터 만들때 날짜를 입력 안 해서 오류 날수 있으니 날짜는 
-      // 0000-00-00 00:00:00 왼쪽과 같이 넣으셔도 됩니다.
+    // 아래 중첩되지 않은 left join 과 중첩된 left join을 실행시켜 값을 비교해보세요!
+    // post, comment, like 에 더미데이터 넣으시고 테스트 해야합니다. 
+    // dbeaver 이용해서 더미데이터 만들때 날짜를 입력 안 해서 오류 날수 있으니 날짜는 
+    // 0000-00-00 00:00:00 왼쪽과 같이 넣으셔도 됩니다.
 
-      // 중첩되지 않은 left join
-      // include: [Post, Comment, Like],
-      // required: false,
+    // 중첩되지 않은 left join
+    // include: [Post, Comment, Like],
+    // required: false,
 
-      // 중첩된 left join
-      // include: [
-      //   {
-      //     model: Post,
-      //     required: false,
-      //   }, // left join 하기위해선 false 주어야함
-      //   {
-      //     model: Post,
-      //     include: Like,
-      //     required: false,
-      //   },
-      // ],
+    // 중첩된 left join
+    // include: [
+    //   {
+    //     model: Post,
+    //     required: false,
+    //   }, // left join 하기위해선 false 주어야함
+    //   {
+    //     model: Post,
+    //     include: Like,
+    //     required: false,
+    //   },
+    // ],
     // });
     // console.log({ users });
 
     const [users, metadata] = await sequelize.query("SELECT * FROM Users;");
-    console.log({ users });
-    console.log({ metadata });
+    // console.log({ users });
+    // console.log({ metadata });
 
     res.send({ users });
   } catch (error) {
@@ -167,4 +168,21 @@ const deleteUsers = async (req, res) => {
   }
 };
 
-module.exports = { getUsers, createUser, updateUser, deleteUser, deleteUsers };
+async function login(req, res) {
+  const { nickname, password } = req.body;
+
+  const userInfo = await User.findOne({
+    where:
+      { nickname, password },
+  });
+
+  const token = jwt.sign({userId:userInfo.id}, process.env.JWT_SECRET_KEY)
+  
+  res.cookie('jwt', token, {
+    maxAge: 1000 * 60 * 10,
+  })
+
+  res.send('HI');
+}
+
+module.exports = { getUsers, createUser, updateUser, deleteUser, deleteUsers, login };
