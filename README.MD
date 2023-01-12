@@ -1,3 +1,49 @@
+# Linklist
+- 개인과제 - https://teamsparta.notion.site/Node-js-b177edcc731147b38ba49594849627e9
+- api 명세 - https://teamsparta.notion.site/4cac92913a394da5978127a7209ca773?v=bc21b59671544d29b76d67941bf161fd
+- ERD - https://drawsql.app/teams/sparta-12/diagrams/1
+- 후발대 노션 - https://www.notion.so/teamsparta/_1-12-26-30-1cd4866ab2e34ea194a59f09da2e166e
+
+# API 명세
+| 기능 | URL | Method | request | response | response(error) |
+|-----|-----|--------|---------|----------|-----------------|
+| 회원가입 | /signup | post | 
+|  |  |  |
+|  |  |  |
+
+# 기능 체크 리스트 
+
+# checklist
+## API
+### 일반
+<input type="checkbox" checked> 회원가입 - signup   
+<input type="checkbox" checked> 로그인 - login   
+
+### 게시글
+<input type="checkbox" checked> 게시글 작성 - posts   
+<input type="checkbox" checked> 게시글 조회 - posts   
+<input type="checkbox" checked> 게시글 상세 조회 - posts/:postId <br>
+<input type="checkbox" checked> 게시글 수정 - posts/:postId <br>
+<input type="checkbox" checked> 게시글 삭제 - posts/:postId 
+
+### 댓글
+<input type="checkbox" > 댓글 생성 - comments/:postId <br>
+<input type="checkbox" > 댓글 목록 조회 - comments/:postId <br>
+<input type="checkbox" > 댓글 수정 - comments/:postId <br>
+<input type="checkbox" > 댓글 삭제 - comments/:postId <br>
+
+## 좋아요
+<input type="checkbox" > 좋아요 게시글 죄회 - posts/like   
+<input type="checkbox" > 게시글 조회 - posts/:postId/like   
+
+  
+
+   
+
+
+
+
+
 # 이제 이 레포는 제껍니다.
 
 ## Git clone
