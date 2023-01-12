@@ -1,7 +1,7 @@
 {
   "name": "node_test",
   "version": "1.0.0",
-  "description": "",
+  "description": "<input type=\"checkbox\" > 회원가입 - signup   \r <input type=\"checkbox\" > 로그인 - login",
   "main": "app.js",
   "scripts": {
     "start": "nodemon app.js"
@@ -20,5 +20,16 @@
   "devDependencies": {
     "nodemon": "^2.0.20",
     "sequelize-cli": "^6.5.2"
-  }
+  },
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jyh7a/week_1_assignment_gittest.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jyh7a/week_1_assignment_gittest/issues"
+  },
+  "homepage": "https://github.com/jyh7a/week_1_assignment_gittest#readme"
 }

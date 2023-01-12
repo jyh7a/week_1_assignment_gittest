@@ -7,6 +7,15 @@ const createPosts = async (req, res) => {
     // 등록하는 로직
     const { id: userId, title, content } = req.body;
 
+    // 조리턴
+    // 유저가 없을때는 '유저가 없습니다 라고 전달'
+    const user = await User.findOne({where: {id: userId}})
+    if(!user){
+      return res
+      .status(400)
+      .send({ errorMessage: "유저가 없습니다." });
+    }    
+
     if (Object.keys(req.body).length <= 0) {
       return res
         .status(412)

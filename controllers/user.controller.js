@@ -82,14 +82,9 @@ const createUser = async (req, res) => {
     // console.log({ user });
 
     try {
-      const [userId, metadata] = await sequelize.query(`
-        INSERT INTO Users
-        (nickname, password)
-        values("${nickname}", "${password}")
-      `);
-      console.log({ userId });
-      console.log({ metadata });
-      res.status(201).send({ userId });
+      const user = await User.create({nickname, password})
+      // console.log({ user });
+      res.status(201).send({ user });
     } catch (error) {
       console.log(error);
       res.status(500).send({ errorMessage: error.original.sqlMessage });
