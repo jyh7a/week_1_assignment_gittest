@@ -1,25 +1,71 @@
+# Linklist
+
+- 개인과제 - https://teamsparta.notion.site/Node-js-b177edcc731147b38ba49594849627e9
+- api 명세 - https://teamsparta.notion.site/4cac92913a394da5978127a7209ca773?v=bc21b59671544d29b76d67941bf161fd
+- ERD - https://drawsql.app/teams/sparta-12/diagrams/1
+- 후발대 노션 - https://www.notion.so/teamsparta/_1-12-26-30-1cd4866ab2e34ea194a59f09da2e166e
+
+<br>
+
+# 유용한 도구 
+- brave 브라우저 - 모든지역 검색 가능 
+- ChatGPT - 대화형 검색 엔진 - https://chat.openai.com/
+- you.com - 대화형 검색 엔진 - https://you.com/
+
+<br>
+
+# 기능 체크 리스트
+
+<input type="checkbox" checked> 1. 회원가입 API <br>
+<input type="checkbox" checked> 2. 로그인 API <br>
+<input type="checkbox" checked> 3. 로그인 검사 <br>
+<input type="checkbox" checked> 4. 댓글 목록 조회 API <br>
+<input type="checkbox" > 5. 댓글 작성 API <br>
+<input type="checkbox" > 6. 댓글 수정 API <br>
+<input type="checkbox" > 7. 댓글 삭제 API <br>
+<input type="checkbox" checked> 8. 게시글 좋아요 API <br>
+<input type="checkbox" checked> 9. 좋아요 게시글 조회 API <br>
+
+<br>
+
 # checklist
+
 ## API
+
 ### 일반
-<input type="checkbox" > 회원가입 - signup   
-<input type="checkbox" > 로그인 - login   
+
+<input type="checkbox" checked> 회원가입 - signup - All  
+<input type="checkbox" checked> 로그인 - login - All
 
 ### 게시글
-<input type="checkbox" > 게시글 작성 - posts   
-<input type="checkbox" > 게시글 조회 - posts   
-<input type="checkbox" > 게시글 상세 조회 - posts/:postId <br>
-<input type="checkbox" > 게시글 수정 - posts/:postId <br>
-<input type="checkbox" > 게시글 삭제 - posts/:postId 
+
+<input type="checkbox" checked> 게시글 작성 - posts - User  
+<input type="checkbox" checked> 게시글 목록 조회 - posts - All  
+<input type="checkbox" checked> 게시글 상세 조회 - posts/:postId - All<br>
+<input type="checkbox" checked> 게시글 수정 - posts/:postId - User<br>
+<input type="checkbox" checked> 게시글 삭제 - posts/:postId - User
 
 ### 댓글
-<input type="checkbox" > 댓글 생성 - comments/:postId <br>
-<input type="checkbox" > 댓글 목록 조회 - comments/:postId <br>
-<input type="checkbox" > 댓글 수정 - comments/:postId <br>
-<input type="checkbox" > 댓글 삭제 - comments/:postId <br>
+
+<input type="checkbox" > 댓글 생성 - comments/:postId - User<br>
+<input type="checkbox" > 댓글 목록 조회 - comments/:postId - All<br>
+<input type="checkbox" > 댓글 수정 - comments/:postId - User<br>
+<input type="checkbox" > 댓글 삭제 - comments/:postId - User<br>
 
 ## 좋아요
-<input type="checkbox" > 좋아요 게시글 죄회 - posts/like   
-<input type="checkbox" > 게시글 조회 - posts/:postId/like  
+
+<input type="checkbox" checked> 좋아요 게시글 조회 - posts/like - User  
+<input type="checkbox" checked> 게시글 좋아요 누루기 - posts/:postId/like - User
+
+<br>
+
+# Reference
+
+- status code(401,403) - https://sanghaklee.tistory.com/61
+- ststus code(400, 412) - https://stackoverflow.com/questions/10730852/http-status-code-400-vs-412?noredirect=1&lq=1
+- status code(update success) - https://www.moesif.com/blog/technical/api-design/Which-HTTP-Status-Code-To-Use-For-Every-CRUD-App/#200---299
+
+<br>
 
 # 이제 이 레포는 제껍니다.
 
@@ -550,6 +596,7 @@ module.exports = {
 <br/>
 
 `20221230074551-alter-reference-post.js`
+
 ```
 "use strict";
 
@@ -794,6 +841,7 @@ module.exports = router;
 <br>
 
 ## write controllers/user.controller.js
+
 ```
 const { sequelize, User, Post, Comment, Like } = require("../models");
 
@@ -801,8 +849,8 @@ const getUsers = async (req, res) => {
   try {
     const users = await User.findAll({
       // 아래 중첩되지 않은 left join 과 중첩된 left join을 실행시켜 값을 비교해보세요!
-      // post, comment, like 에 더미데이터 넣으시고 테스트 해야합니다. 
-      // dbeaver 이용해서 더미데이터 만들때 날짜를 입력 안 해서 오류 날수 있으니 날짜는 
+      // post, comment, like 에 더미데이터 넣으시고 테스트 해야합니다.
+      // dbeaver 이용해서 더미데이터 만들때 날짜를 입력 안 해서 오류 날수 있으니 날짜는
       // 0000-00-00 00:00:00 왼쪽과 같이 넣으셔도 됩니다.
 
       // 중첩되지 않은 left join
@@ -888,7 +936,7 @@ const createUser = async (req, res) => {
       res.status(201).send({ userId });
     } catch (error) {
       console.log(error);
-      res.status(500).send({ errorMessage: error.original.sqlMessage });
+      res.status(500).send({ errorMessage: error.original?.sqlMessage });
     }
   } catch (error) {
     console.error(error);
@@ -898,7 +946,7 @@ const createUser = async (req, res) => {
 
 const updateUser = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { id } = res.locals.user;
     const { nickname, password } = req.body;
 
     // const result = await User.update({ nickname, password }, { where: { id } });
@@ -921,7 +969,7 @@ const updateUser = async (req, res) => {
 
 const deleteUser = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { id } = res.locals.user;
 
     // const result = await User.destroy({
     //   where: { id },
@@ -929,7 +977,7 @@ const deleteUser = async (req, res) => {
     // console.log({ result });
 
     const [result, metadata] = await sequelize.query(`
-      DELETE FROM Users WHERE id = ${id}; 
+      DELETE FROM Users WHERE id = ${id};
     `);
     console.log({ result });
     console.log({ metadata });
@@ -944,7 +992,7 @@ const deleteUser = async (req, res) => {
 // 테스트용
 const deleteUsers = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { id } = res.locals.user;
 
     // const result = await User.destroy({
     //   where: {},
@@ -967,8 +1015,8 @@ const deleteUsers = async (req, res) => {
 module.exports = { getUsers, createUser, updateUser, deleteUser, deleteUsers };
 
 ```
-<br>
 
+<br>
 
 ## Modify app.js
 
@@ -1002,3 +1050,11 @@ app.listen(process.env.PORT, () => {
 ```
 API 테스트 도구를 통해서 user 생성 및 user get 테스트
 ```
+
+<br>
+
+# Reference
+
+- sequelize
+  - https://kyounghwan01.github.io/blog/etc/sequelize/sequelize-join/#inner-outer-join%E1%84%8B%E1%85%B5%E1%84%85%E1%85%A1%E1%86%AB
+  - https://inpa.tistory.com/entry/ORM-%F0%9F%93%9A-sequelize-left-join-%ED%95%98%EB%8A%94%EB%B2%95
