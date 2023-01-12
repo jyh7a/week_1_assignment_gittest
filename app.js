@@ -11,12 +11,12 @@ app.use(express.json());
 app.use(cookieParser());
 require("dotenv").config();
 
+app.listen(process.env.PORT, () => {
+  console.log(`http://127.0.0.1:${process.env.PORT}`);
+});
+
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
 app.use("/api", [singupRouter, loginRouter, userRouter, postRouter]);
-
-app.listen(process.env.PORT, () => {
-  console.log(`http://127.0.0.1:${process.env.PORT}`);
-});

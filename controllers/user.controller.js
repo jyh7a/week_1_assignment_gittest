@@ -24,14 +24,13 @@ const login = async (req, res) => {
     res.cookie(
       "jwt",
       { token: jwt.sign({ id: user.id }, process.env.JWT_SECRET_KEY) },
-      { maxAge: 1000 * 60 * 10 }
+      { maxAge: 1000 * 60 * 1000 }
     );
 
     res.send({
       token: jwt.sign({ id: user.id }, process.env.JWT_SECRET_KEY),
     });
   } catch (error) {
-    console.log(error);
     if (error.original?.sqlMessage) {
       return res.status(500).send({ errorMessage: error.original?.sqlMessage });
     }
@@ -64,15 +63,12 @@ const getUsers = async (req, res) => {
     //   },
     // ],
     // });
-    // console.log({ users });
+    //
 
     const [users, metadata] = await sequelize.query("SELECT * FROM Users;");
-    console.log({ users });
-    console.log({ metadata });
 
     res.send({ users });
   } catch (error) {
-    console.log(error);
     if (error.original?.sqlMessage) {
       return res.status(500).send({ errorMessage: error.original?.sqlMessage });
     }
@@ -121,7 +117,7 @@ const createUser = async (req, res) => {
 
     try {
       const user = await User.create({ nickname, password });
-      console.log({ user });
+
       res.status(201).send({ user });
 
       // const [userId, metadata] = await sequelize.query(`
@@ -129,11 +125,10 @@ const createUser = async (req, res) => {
       //   (nickname, password)
       //   values("${nickname}", "${password}")
       // `);
-      // console.log({ userId });
-      // console.log({ metadata });
+      //
+      //
       // res.status(201).send({ userId });
     } catch (error) {
-      console.log(error);
       if (error.original?.sqlMessage) {
         return res
           .status(500)
@@ -142,7 +137,6 @@ const createUser = async (req, res) => {
       res.status(500).send({ errorMessage: error.message });
     }
   } catch (error) {
-    console.log(error);
     if (error.original?.sqlMessage) {
       return res.status(500).send({ errorMessage: error.original?.sqlMessage });
     }
@@ -152,23 +146,20 @@ const createUser = async (req, res) => {
 
 const updateUser = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { id } = res.locals.user;
     const { nickname, password } = req.body;
 
     // const result = await User.update({ nickname, password }, { where: { id } });
-    // console.log({ result });
+    //
 
     const [result, metadata] = await sequelize.query(`
       UPDATE Users SET
       nickname="${nickname}",password="${password}"
       WHERE id=${id};
     `);
-    console.log({ result });
-    console.log({ metadata });
 
     res.send({ result });
   } catch (error) {
-    console.log(error);
     if (error.original?.sqlMessage) {
       return res.status(500).send({ errorMessage: error.original?.sqlMessage });
     }
@@ -178,22 +169,19 @@ const updateUser = async (req, res) => {
 
 const deleteUser = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { id } = res.locals.user;
 
     // const result = await User.destroy({
     //   where: { id },
     // });
-    // console.log({ result });
+    //
 
     const [result, metadata] = await sequelize.query(`
       DELETE FROM Users WHERE id = ${id}; 
     `);
-    console.log({ result });
-    console.log({ metadata });
 
     res.send({ result });
   } catch (error) {
-    console.log(error);
     if (error.original?.sqlMessage) {
       return res.status(500).send({ errorMessage: error.original?.sqlMessage });
     }
@@ -207,17 +195,14 @@ const deleteUsers = async (req, res) => {
     // const result = await User.destroy({
     //   where: {},
     // });
-    // console.log({ result });
+    //
 
     const [result, metadata] = await sequelize.query(`
       DELETE FROM Users;
     `);
-    console.log({ result });
-    console.log({ metadata });
 
     res.send({ result });
   } catch (error) {
-    console.log(error);
     if (error.original?.sqlMessage) {
       return res.status(500).send({ errorMessage: error.original?.sqlMessage });
     }

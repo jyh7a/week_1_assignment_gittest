@@ -9,7 +9,7 @@ const {
   updatePost,
   deletePost,
   getLikePosts,
-  createLikePost,
+  createAndDeleteLikePost,
   deletePosts,
 } = require("../controllers/post.controller");
 
@@ -20,9 +20,9 @@ router.get("/posts/like", authMiddleware, getLikePosts);
 router.get("/posts/:id", getPost);
 
 router.post("/posts", authMiddleware, createPost);
-router.post("/posts/:id/like", authMiddleware, createLikePost);
+router.post("/posts/:id/like", authMiddleware, createAndDeleteLikePost);
 
-router.put("/posts", authMiddleware, updatePost);
+router.put("/posts/:id", authMiddleware, updatePost);
 
 router.delete("/posts/:id", authMiddleware, deletePost);
 // 테스트용
