@@ -5,19 +5,12 @@ const { post } = require("../routes/post.routes");
 // 게시글 생성
 const createPosts = async (req, res) => {
   try {
-    // TODO 유저인증은 auth-middleware 에서 체크
-
     // 등록하는 로직
-    const { id: userId, title, content } = req.body;
+    const { title, content } = req.body;
+    const {id:userId} = res.locals.user;
 
     // 조리턴
     // 유저가 없을때는 '유저가 없습니다 라고 전달'
-    const user = await User.findOne({where: {id: userId}})
-    if(!user){
-      return res
-      .status(400)
-      .send({ errorMessage: "유저가 없습니다." });
-    }    
 
     if (Object.keys(req.body).length <= 0) {
       return res
@@ -79,7 +72,25 @@ const getPosts = async (req, res) => {
 };
 
 // 게시글 상세 조회
-// const getPost = 
+const detailPost = async (req, res) => {
+  try {
+    // 1. id값을 parameter로 받는다
+    const { id } = req.params;
+    // 2. 1번에서 받은 id값과 동일한 id값을 가진 게시글을 찾는다 (findOne)
+    const existPost = await Post.findOne({where: {id}});
+
+    if(!existPost) {
+      res.status(400).send({message: "없는 게시글입니다."});
+      return;
+    }
+    // 3. 그 게시글이 존재하면 json으로 보내준다
+    return res.status(200).send({data: existPost})
+
+  } catch (error) {
+    console.error(error);
+    res.status(400).send({ errorMessage: error.message });
+  }
+}
 
 // 게시글 상세 조회 함수도 export 시켜야함
-module.exports = { createPosts, getPosts };
+module.exports = { createPosts, getPosts, detailPost };
