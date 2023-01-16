@@ -2,8 +2,11 @@ const { sequelize, User, Post, Comment, Like } = require("../models");
 const user = require("../models/user");
 const { post } = require("../routes/post.routes");
 
+// 게시글 생성
 const createPosts = async (req, res) => {
   try {
+    // TODO 유저인증은 auth-middleware 에서 체크
+
     // 등록하는 로직
     const { id: userId, title, content } = req.body;
 
@@ -44,6 +47,7 @@ const createPosts = async (req, res) => {
   }
 };
 
+// 모든 게시글 조회
 const getPosts = async (req, res) => {
   try {
     // const posts = await Post.findAll({
@@ -74,4 +78,8 @@ const getPosts = async (req, res) => {
   }
 };
 
+// 게시글 상세 조회
+// const getPost = 
+
+// 게시글 상세 조회 함수도 export 시켜야함
 module.exports = { createPosts, getPosts };

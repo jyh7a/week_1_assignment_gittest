@@ -18,13 +18,13 @@
 
 <input type="checkbox" checked> 1. 회원가입 API <br>
 <input type="checkbox" checked> 2. 로그인 API <br>
-<input type="checkbox" checked> 3. 로그인 검사 <br>
-<input type="checkbox" checked> 4. 댓글 목록 조회 API <br>
+<input type="checkbox" checked> 3. 로그인 검사 미들웨어 <br>
+<input type="checkbox" > 4. 댓글 목록 조회 API <br>
 <input type="checkbox" > 5. 댓글 작성 API <br>
 <input type="checkbox" > 6. 댓글 수정 API <br>
 <input type="checkbox" > 7. 댓글 삭제 API <br>
-<input type="checkbox" checked> 8. 게시글 좋아요 API <br>
-<input type="checkbox" checked> 9. 좋아요 게시글 조회 API <br>
+<input type="checkbox" > 8. 게시글 좋아요 API <br>
+<input type="checkbox" > 9. 좋아요 게시글 조회 API <br>
 
 <br>
 
@@ -41,9 +41,9 @@
 
 <input type="checkbox" checked> 게시글 작성 - posts - User  
 <input type="checkbox" checked> 게시글 목록 조회 - posts - All  
-<input type="checkbox" checked> 게시글 상세 조회 - posts/:postId - All<br>
-<input type="checkbox" checked> 게시글 수정 - posts/:postId - User<br>
-<input type="checkbox" checked> 게시글 삭제 - posts/:postId - User
+<input type="checkbox" > 게시글 상세 조회 - posts/:postId - All<br>
+<input type="checkbox" > 게시글 수정 - posts/:postId - User<br>
+<input type="checkbox" > 게시글 삭제 - posts/:postId - User
 
 ### 댓글
 
@@ -54,8 +54,8 @@
 
 ## 좋아요
 
-<input type="checkbox" checked> 좋아요 게시글 조회 - posts/like - User  
-<input type="checkbox" checked> 게시글 좋아요 누루기 - posts/:postId/like - User
+<input type="checkbox" > 좋아요 게시글 조회 - posts/like - User  
+<input type="checkbox" > 게시글 좋아요 누루기 - posts/:postId/like - User
 
 <br>
 

@@ -4,7 +4,7 @@ const {User} = require('../models');
 async function auth_middleware(req, res, next) {
   try{
     console.log('여기는 검증 미들웨어 입다');
-    console.log(req.cookies.jwt);
+    // console.log(req.cookies.jwt);
   
     // 1. 쿠키가 있는지 => 없으면 로그인후 사용 가능한 api 메세지 주면서 리턴
     // 2. 쿠키에 jwt 있는지 => 없으면 로그인후 사용 가능한 api 메세지 주면서 리턴
