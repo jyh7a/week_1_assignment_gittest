@@ -10,5 +10,6 @@ router.get("/posts", getPosts);
 router.get("/posts/:id", detailPost)
 // 게시글 등록 - User 
 router.post("/posts", auth_middleware, createPosts);
+// 게시글 수정 - User
 
 module.exports = router;
