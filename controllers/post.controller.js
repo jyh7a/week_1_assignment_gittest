@@ -119,6 +119,24 @@ const updatePosts = async (req, res) => {
 }
 
 // 게시글 삭제
+const deletePosts = async (req, res) => {
+  try{
+    // 1. id 값을 파라미터에서 가져온다.
+    const { id } = req.params;
+    // 2. userid를 받아와서 자신이 쓴 포스트만 삭제할 수 있도록 찾는다
+    const {id:userId} = res.locals.user;
+    const existPost = await Post.findOne({where: {id, userId}});
+    
+    if (!existPost) {
+      return res.status(400).send({message: "없는 게시글입니다."});
+    }
+    await Post.destroy({where: {id, userId}})
+    return res.status(200).send({message: "삭제가 완료되었습니다."})
+  } catch (error) {
+    console.error(error);
+    res.status(400).send({ errorMessage: error.message });
+  }
+}
 
 // 게시글 상세 조회 함수도 export 시켜야함
-module.exports = { createPosts, getPosts, detailPost };
+module.exports = { createPosts, getPosts, detailPost, deletePosts};
