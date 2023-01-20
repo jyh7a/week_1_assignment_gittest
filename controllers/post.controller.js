@@ -7,7 +7,7 @@ const createPosts = async (req, res) => {
   try {
     // 등록하는 로직
     const { title, content } = req.body;
-    const {id:userId} = res.locals.user;
+    const { id: userId } = res.locals.user;
 
     // 조리턴
     // 유저가 없을때는 '유저가 없습니다 라고 전달'
@@ -46,7 +46,7 @@ const getPosts = async (req, res) => {
     // const posts = await Post.findAll({
     //   include: [Like],
     //   required: false,
-    // });  
+    // });
 
     const [result, metadata] = await sequelize.query(`
       SELECT p.*, u.nickname, COALESCE(lc.cnt, lc.cnt, 0) AS 'likes'
@@ -77,20 +77,19 @@ const detailPost = async (req, res) => {
     // 1. id값을 parameter로 받는다
     const { id } = req.params;
     // 2. 1번에서 받은 id값과 동일한 id값을 가진 게시글을 찾는다 (findOne)
-    const existPost = await Post.findOne({where: {id}});
+    const existPost = await Post.findOne({ where: { id } });
 
-    if(!existPost) {
-      res.status(400).send({message: "없는 게시글입니다."});
+    if (!existPost) {
+      res.status(400).send({ message: "없는 게시글입니다." });
       return;
     }
     // 3. 그 게시글이 존재하면 json으로 보내준다
-    return res.status(200).send({data: existPost})
-
+    return res.status(200).send({ data: existPost });
   } catch (error) {
     console.error(error);
     res.status(400).send({ errorMessage: error.message });
   }
-}
+};
 
 // 게시글 수정
 const updatePosts = async (req, res) => {
@@ -101,42 +100,49 @@ const updatePosts = async (req, res) => {
   try {
     const { id } = req.params;
     const { title, content } = req.body;
-    const {id:userId} = res.locals.user;
-    const existPost = await Post.findOne({where: {id, userId}});
-    if(!existPost) {
-      res.status(400).send({message: "없는 게시글입니다."});
+    const { id: userId } = res.locals.user;
+    const existPost = await Post.findOne({ where: { id, userId } });
+    if (!existPost) {
+      res.status(400).send({ message: "없는 게시글입니다." });
       return;
     }
     const updatePosts = await Post.update(
-      { title, content }, { where: { id } }
+      { title, content },
+      { where: { id } }
     );
     console.log(updatePosts);
-    res.status(200).send({ message: "게시글을 수정하였습니다."})
+    res.status(200).send({ message: "게시글을 수정하였습니다." });
   } catch (error) {
     console.error(error);
     res.status(400).send({ errorMessage: error.message });
   }
-}
+};
 
 // 게시글 삭제
 const deletePosts = async (req, res) => {
-  try{
+  try {
     // 1. id 값을 파라미터에서 가져온다.
     const { id } = req.params;
     // 2. userid를 받아와서 자신이 쓴 포스트만 삭제할 수 있도록 찾는다
-    const {id:userId} = res.locals.user;
-    const existPost = await Post.findOne({where: {id, userId}});
-    
+    const { id: userId } = res.locals.user;
+    const existPost = await Post.findOne({ where: { id, userId } });
+
     if (!existPost) {
-      return res.status(400).send({message: "없는 게시글입니다."});
+      return res.status(400).send({ message: "없는 게시글입니다." });
     }
-    await Post.destroy({where: {id, userId}})
-    return res.status(200).send({message: "삭제가 완료되었습니다."})
+    await Post.destroy({ where: { id, userId } });
+    return res.status(200).send({ message: "삭제가 완료되었습니다." });
   } catch (error) {
     console.error(error);
     res.status(400).send({ errorMessage: error.message });
   }
-}
+};
 
 // 게시글 상세 조회 함수도 export 시켜야함
-module.exports = { createPosts, getPosts, detailPost, deletePosts};
+module.exports = {
+  createPosts,
+  getPosts,
+  detailPost,
+  updatePosts,
+  deletePosts,
+};
