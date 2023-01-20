@@ -92,5 +92,33 @@ const detailPost = async (req, res) => {
   }
 }
 
+// 게시글 수정
+const updatePosts = async (req, res) => {
+  // 1. postId, userId를 가지고 온다.
+  // 2. postId, userId가 일치하는 게시글을 찾는다.
+  // 3. 존재하지 않으면 에러를 보낸다.
+  // 4. 존재할 경우 게시글을 수정한다.
+  try {
+    const { id } = req.params;
+    const { title, content } = req.body;
+    const {id:userId} = res.locals.user;
+    const existPost = await Post.findOne({where: {id, userId}});
+    if(!existPost) {
+      res.status(400).send({message: "없는 게시글입니다."});
+      return;
+    }
+    const updatePosts = await Post.update(
+      { title, content }, { where: { id } }
+    );
+    console.log(updatePosts);
+    res.status(200).send({ message: "게시글을 수정하였습니다."})
+  } catch (error) {
+    console.error(error);
+    res.status(400).send({ errorMessage: error.message });
+  }
+}
+
+// 게시글 삭제
+
 // 게시글 상세 조회 함수도 export 시켜야함
 module.exports = { createPosts, getPosts, detailPost };

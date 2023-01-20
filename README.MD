@@ -42,7 +42,7 @@
 <input type="checkbox" checked> 게시글 작성 - posts - User  
 <input type="checkbox" checked> 게시글 목록 조회 - posts - All  
 <input type="checkbox" checked> 게시글 상세 조회 - posts/:postId - All<br>
-<input type="checkbox" > 게시글 수정 - posts/:postId - User<br>
+<input type="checkbox" checked> 게시글 수정 - posts/:postId - User<br>
 <input type="checkbox" > 게시글 삭제 - posts/:postId - User
 
 ### 댓글
