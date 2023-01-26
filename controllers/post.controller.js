@@ -144,11 +144,25 @@ const likePosts = async (req, res) => {
     const { id } = req.params;
     const { id: userId } = res.locals.user;
 
+    // const likePost = await Post.findAll({ include: [Like], require: false });
     // 게시글테이블 id = 좋아요 테이블 userId left join 가지고온다.
-
-    const likePost = await Post.findAll({ include: [Like], require: false });
-    res.send(likePost);
-  } catch (err) {
+    // 좋아요가 있는 자신의 게시글 조회(row query)
+    const [data, metadata] = await sequelize.query(`
+      SELECT p.*, u.nickname, lc.cnt AS 'likes'
+      FROM Posts p
+      INNER JOIN (
+              SELECT p.id, COUNT(p.id) as cnt
+              FROM Posts p 
+              INNER JOIN Likes l ON p.id = l.postId 
+              GROUP BY p.id
+          ) AS lc 
+          ON p.id = lc.id
+      LEFT JOIN Users u
+      ON p.userId = u.id
+      WHERE p.userId = ${userId};
+   `);
+    res.send({ data });
+  } catch (error) {
     console.error(error);
     res.status(400).send({ errorMessage: error.message });
   }
@@ -161,5 +175,5 @@ module.exports = {
   detailPost,
   updatePosts,
   deletePosts,
-  likePosts
+  likePosts,
 };
