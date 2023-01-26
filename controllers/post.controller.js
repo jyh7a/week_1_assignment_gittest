@@ -138,6 +138,22 @@ const deletePosts = async (req, res) => {
   }
 };
 
+// 게시글 좋아요
+const likePosts = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { id: userId } = res.locals.user;
+
+    // 게시글테이블 id = 좋아요 테이블 userId left join 가지고온다.
+
+    const likePost = await Post.findAll({ include: [Like], require: false });
+    res.send(likePost);
+  } catch (err) {
+    console.error(error);
+    res.status(400).send({ errorMessage: error.message });
+  }
+};
+
 // 게시글 상세 조회 함수도 export 시켜야함
 module.exports = {
   createPosts,
@@ -145,4 +161,5 @@ module.exports = {
   detailPost,
   updatePosts,
   deletePosts,
+  likePosts
 };
